@@ -1,7 +1,7 @@
 import { Container, Stack } from "@chakra-ui/react";
 import { getThoughts } from "@/lib/thoughts";
 import type { Thought } from "@/app/generated/prisma/client";
-import { ThoughtCard } from "@/components/ui/thoughtCard";
+import { ThoughtList } from "@/components/ui/thoughtList";
 import { InputSearch } from "@/components/ui/inputSearch";
 import { logger } from "@/lib/logger";
 
@@ -17,11 +17,7 @@ const Home = async () => {
     <Container maxW="container.lg" py={10}>
       <Stack gap={8}>
         <InputSearch />
-        <Stack gap={4}>
-          {thoughts.map((thought) => (
-            <ThoughtCard key={thought.id} content={thought} />
-          ))}
-        </Stack>
+        <ThoughtList thoughts={thoughts} />
       </Stack>
     </Container>
   );

@@ -6,10 +6,12 @@ import { toaster } from "./toaster";
 
 type Props = {
   id: number;
+  onDelete?: (id: number) => void;
 };
 
-export const ActionButton = ({ id }: Props) => {
+export const ActionButton = ({ id, onDelete }: Props) => {
   const deleteThought = async () => {
+    onDelete?.(id);
     const result = await handleDeleteThought(id);
 
     if (result?.success === false) {
@@ -28,6 +30,14 @@ export const ActionButton = ({ id }: Props) => {
       right="-11px"
       aria-label="Delete thought"
       rounded="full"
+      opacity={0}
+      transition="opacity 0.15s ease, transform 0.15s ease, color 0.15s ease, box-shadow 0.15s ease"
+      _groupHover={{ opacity: 1 }}
+      _hover={{
+        transform: "scale(1.2)",
+        color: "#e05c5c",
+        boxShadow: "0 0 0 2px #e05c5c33",
+      }}
     >
       <GoX />
     </IconButton>
