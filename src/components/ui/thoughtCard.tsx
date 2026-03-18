@@ -3,23 +3,22 @@ import { ActionButton } from "./actionButton";
 
 type Props = {
   content: { id: number; content: string; createdAt: Date };
+  onDelete?: (id: number) => void;
 };
-export const ThoughtCard = ({ content }: Props) => {
+export const ThoughtCard = ({ content, onDelete }: Props) => {
   return (
     <Card.Root
       position="relative"
-      transition="all 0.15s ease"
-      _hover={{
-        transform: "translateY(-2px)",
-        boxShadow: "lg",
-      }}
+      className="group"
+      transition="border-color 0.15s ease"
+      _hover={{ borderColor: "whiteAlpha.400" }}
       variant="subtle"
       size="sm"
       bg="whiteAlpha.100"
       border="1px solid"
       borderColor="whiteAlpha.200"
     >
-      <ActionButton id={content.id} />
+      <ActionButton id={content.id} onDelete={onDelete} />
       <Card.Header>
         <Heading fontWeight={400} color="white" size="md">
           {content.content}
