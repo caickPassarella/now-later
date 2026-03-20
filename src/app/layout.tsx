@@ -34,7 +34,7 @@ export default function RootLayout({
         <Provider>
           <Toaster />
           <Flex minH="100vh" bg="gray.100">
-            <Box flex={1} bg="#73877B" p={25}>
+            <Box flex={1} bg="#F8FAF9" p={25}>
               {children}
             </Box>
           </Flex>

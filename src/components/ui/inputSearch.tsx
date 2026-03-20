@@ -28,8 +28,14 @@ export const InputSearch = () => {
   };
 
   return (
-    <InputGroup maxW="600px" alignSelf="center" startElement={<GoSearch />}>
+    <InputGroup
+      paddingBottom={12}
+      alignSelf="center"
+      startElement={<GoSearch />}
+    >
       <Input
+        padding={8}
+        borderRadius={12}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         value={inputValue}
