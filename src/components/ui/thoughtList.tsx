@@ -17,7 +17,7 @@ export const ThoughtList = ({ thoughts: initial }: { thoughts: Thought[] }) => {
     setThoughts((prev) => prev.filter((t) => t.id !== id));
 
   return (
-    <Stack gap={4}>
+    <Stack gap={5}>
       <AnimatePresence>
         {thoughts.map((thought) => (
           <motion.div

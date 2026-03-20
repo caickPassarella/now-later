@@ -1,30 +1,18 @@
 "use client";
 import { IconButton } from "@chakra-ui/react";
-import { GoX } from "react-icons/go";
-import { handleDeleteThought } from "@/lib/actions";
-import { toaster } from "./toaster";
 
 type Props = {
-  id: number;
-  onDelete?: (id: number) => void;
+  icon: React.ReactNode;
+  onClick?: () => void;
 };
 
-export const ActionButton = ({ id, onDelete }: Props) => {
-  const deleteThought = async () => {
-    onDelete?.(id);
-    const result = await handleDeleteThought(id);
-
-    if (result?.success === false) {
-      toaster.create({ type: "error", title: result.error });
-    }
-  };
-
+export const ActionButton = ({ onClick, icon }: Props) => {
   return (
     <IconButton
-      onClick={deleteThought}
+      onClick={onClick}
       size="2xs"
-      color="#667B6F"
-      bg="white"
+      color="#ffffff"
+      bg="#4D6055"
       position="absolute"
       top="-11px"
       right="-11px"
@@ -35,11 +23,10 @@ export const ActionButton = ({ id, onDelete }: Props) => {
       _groupHover={{ opacity: 1 }}
       _hover={{
         transform: "scale(1.2)",
-        color: "#e05c5c",
-        boxShadow: "0 0 0 2px #e05c5c33",
+        boxShadow: "0 0 0 2px #4d605530",
       }}
     >
-      <GoX />
+      {icon}
     </IconButton>
   );
 };

@@ -1,11 +1,29 @@
-import { Card, Heading, Text } from "@chakra-ui/react";
+import { Card, HStack, Text } from "@chakra-ui/react";
 import { ActionButton } from "./actionButton";
+import { handleDeleteThought } from "@/lib/actions";
+import { toaster } from "./toaster";
+import { GoX } from "react-icons/go";
 
 type Props = {
   content: { id: number; content: string; createdAt: Date };
   onDelete?: (id: number) => void;
 };
 export const ThoughtCard = ({ content, onDelete }: Props) => {
+  const formattedTime = new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: false,
+  }).format(new Date(content.createdAt));
+
+  const deleteThought = async () => {
+    onDelete?.(content.id);
+    const result = await handleDeleteThought(content.id);
+
+    if (result?.success === false) {
+      toaster.create({ type: "error", title: result.error });
+    }
+  };
+
   return (
     <Card.Root
       position="relative"
@@ -14,19 +32,31 @@ export const ThoughtCard = ({ content, onDelete }: Props) => {
       _hover={{ borderColor: "whiteAlpha.400" }}
       variant="subtle"
       size="sm"
-      bg="whiteAlpha.100"
+      bg="#ffffff"
       border="1px solid"
-      borderColor="whiteAlpha.200"
+      borderColor="#c2c8c254"
+      borderRadius={16}
+      padding={4}
     >
-      <ActionButton id={content.id} onDelete={onDelete} />
-      <Card.Header>
-        <Heading fontWeight={400} color="white" size="md">
+      <ActionButton icon={<GoX />} onClick={deleteThought} />
+      <Card.Body display="flex" flexDirection="column" gap={2} px={6} py={3}>
+        <HStack gap={2}>
+          <Text
+            fontSize="xs"
+            color="#4d6055cf"
+            fontWeight={500}
+            textTransform="uppercase"
+            letterSpacing="wide"
+          >
+            Thought
+          </Text>
+          <Text fontSize="xs" color="#4d6055b6">
+            {formattedTime}
+          </Text>
+        </HStack>
+        <Text fontWeight={500} color="black" fontSize="lg" lineHeight="snug">
           {content.content}
-        </Heading>
-      </Card.Header>
-
-      <Card.Body color="white">
-        <Text fontSize="sm">Thought</Text>
+        </Text>
       </Card.Body>
     </Card.Root>
   );
