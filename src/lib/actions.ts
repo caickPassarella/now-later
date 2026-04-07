@@ -3,7 +3,7 @@
 import { logger } from "./logger";
 
 import { revalidatePath } from "next/cache";
-import { addThought, deleteThought } from "./thoughts";
+import { addThought, softDeleteThought } from "./thoughts";
 
 export async function handleAddThought(content: string) {
   if (!content.trim()) {
@@ -27,7 +27,7 @@ export async function handleDeleteThought(id: number) {
     return { success: false, error: "Invalid ID" };
   }
   try {
-    await deleteThought(id);
+    await softDeleteThought(id);
     revalidatePath("/");
   } catch (e) {
     logger.error("Failed to delete thought", { error: String(e) });

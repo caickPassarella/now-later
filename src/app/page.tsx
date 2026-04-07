@@ -3,6 +3,7 @@ import { getThoughts } from "@/lib/thoughts";
 import type { Thought } from "@/app/generated/prisma/client";
 import { ThoughtList } from "@/components/ui/thoughtList";
 import { InputSearch } from "@/components/ui/inputSearch";
+import { DateTitle } from "@/components/ui/dateTitle";
 import { logger } from "@/lib/logger";
 
 const Home = async () => {
@@ -16,6 +17,7 @@ const Home = async () => {
   return (
     <Container maxW="container.lg" py={10}>
       <Stack gap={8}>
+        <DateTitle />
         <InputSearch />
         <ThoughtList thoughts={thoughts} />
       </Stack>
