@@ -12,6 +12,21 @@ export const getThoughts = async () => {
   return thought;
 };
 
+export const getDeletedThoughts = async () => {
+  const thought = await prisma.thought.findMany({
+    where: { deletedAt: { not: null } },
+    orderBy: {
+      deletedAt: "desc",
+    },
+  });
+  logger.info("Fetched deleted thoughts", { count: thought.length });
+  return thought;
+};
+
+export const countThoughts = async () => {
+  return prisma.thought.count({ where: { deletedAt: null } });
+};
+
 export const addThought = async (content: string) => {
   const thought = await prisma.thought.create({
     data: {

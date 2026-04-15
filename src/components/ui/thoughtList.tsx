@@ -4,9 +4,22 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { ThoughtCard } from "./thoughtCard";
 
-type Thought = { id: number; content: string; createdAt: Date };
+type Thought = {
+  id: number;
+  content: string;
+  createdAt: Date;
+  deletedAt?: Date | null;
+};
 
-export const ThoughtList = ({ thoughts: initial }: { thoughts: Thought[] }) => {
+export const ThoughtList = ({
+  thoughts: initial,
+  groupBy = "createdAt",
+  deleteType = "soft",
+}: {
+  thoughts: Thought[];
+  groupBy?: "createdAt" | "deletedAt";
+  deleteType?: "soft" | "hard";
+}) => {
   const [thoughts, setThoughts] = useState(initial);
 
   useEffect(() => {
@@ -18,7 +31,8 @@ export const ThoughtList = ({ thoughts: initial }: { thoughts: Thought[] }) => {
 
   const grouped = thoughts.reduce(
     (acc, t) => {
-      const key = new Date(t.createdAt).toDateString();
+      const date = t[groupBy] ?? t.createdAt;
+      const key = new Date(date).toDateString();
       (acc[key] ??= []).push(t);
       return acc;
     },
@@ -49,7 +63,7 @@ export const ThoughtList = ({ thoughts: initial }: { thoughts: Thought[] }) => {
                 exit={{ opacity: 0, x: -16, scale: 0.97 }}
                 transition={{ duration: 0.18, ease: "easeOut" }}
               >
-                <ThoughtCard content={thought} onDelete={remove} />
+                <ThoughtCard content={thought} onDelete={remove} deleteType={deleteType} />
               </motion.div>
             ))}
           </AnimatePresence>

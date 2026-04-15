@@ -1,24 +1,26 @@
 import { Container, Stack } from "@chakra-ui/react";
-import { getThoughts } from "@/lib/thoughts";
 import { ThoughtList } from "@/components/ui/thoughtList";
-import { InputSearch } from "@/components/ui/inputSearch";
 import { DateTitle } from "@/components/ui/dateTitle";
+import { getDeletedThoughts } from "@/lib/thoughts";
 import { logger } from "@/lib/logger";
 
-const Home = async () => {
-  const thoughts = await getThoughts().catch((e) => {
-    logger.error("Failed to fetch thoughts", { error: String(e) });
+const Deleted = async () => {
+  const thoughts = await getDeletedThoughts().catch((e) => {
+    logger.error("Failed to fetch deleted thoughts", { error: String(e) });
     throw e;
   });
   return (
     <Container maxW="container.lg" py={10}>
       <Stack gap={8}>
         <DateTitle />
-        <InputSearch />
-        <ThoughtList thoughts={thoughts} deleteType="soft" />
+        <ThoughtList
+          thoughts={thoughts}
+          groupBy="deletedAt"
+          deleteType="hard"
+        />
       </Stack>
     </Container>
   );
 };
 
-export default Home;
+export default Deleted;

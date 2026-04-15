@@ -7,8 +7,13 @@ import { GoX } from "react-icons/go";
 type Props = {
   content: { id: number; content: string; createdAt: Date };
   onDelete?: (id: number) => void;
+  deleteType?: "soft" | "hard";
 };
-export const ThoughtCard = ({ content, onDelete }: Props) => {
+export const ThoughtCard = ({
+  content,
+  onDelete,
+  deleteType = "soft",
+}: Props) => {
   const formattedTime = new Intl.DateTimeFormat("en-US", {
     hour: "numeric",
     minute: "2-digit",
@@ -17,7 +22,7 @@ export const ThoughtCard = ({ content, onDelete }: Props) => {
 
   const deleteThought = async () => {
     onDelete?.(content.id);
-    const result = await handleDeleteThought(content.id);
+    const result = await handleDeleteThought(content.id, deleteType);
 
     if (result?.success === false) {
       toaster.create({ type: "error", title: result.error });
