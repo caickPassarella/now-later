@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Provider } from "@/components/ui/provider";
 import { Flex, Box } from "@chakra-ui/react";
 import { Toaster } from "@/components/ui/toaster";
+import { Sidebar } from "@/components/ui/sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +35,8 @@ export default function RootLayout({
         <Provider>
           <Toaster />
           <Flex minH="100vh" bg="gray.100">
-            <Box flex={1} bg="#F8FAF9" p={25}>
+            <Sidebar />
+            <Box flex={1} bg="#F8FAF9" p={25} ml="80">
               {children}
             </Box>
           </Flex>
