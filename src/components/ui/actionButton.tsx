@@ -13,10 +13,7 @@ export const ActionButton = ({ onClick, icon }: Props) => {
       size="2xs"
       color="#ffffff"
       bg="#4D6055"
-      position="absolute"
-      top="-11px"
-      right="-11px"
-      aria-label="Delete thought"
+      aria-label="action"
       rounded="full"
       opacity={0}
       transition="opacity 0.15s ease, transform 0.15s ease, color 0.15s ease, box-shadow 0.15s ease"
