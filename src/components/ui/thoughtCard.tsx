@@ -1,8 +1,11 @@
-import { Card, HStack, Text } from "@chakra-ui/react";
+"use client";
+import { useState } from "react";
+import { Card, HStack, VStack, Text, Textarea } from "@chakra-ui/react";
 import { ActionButton } from "./actionButton";
 import { handleDeleteThought } from "@/lib/actions";
 import { toaster } from "./toaster";
 import { GoX } from "react-icons/go";
+import { MdOutlineEdit } from "react-icons/md";
 
 type Props = {
   content: { id: number; content: string; createdAt: Date };
@@ -14,6 +17,9 @@ export const ThoughtCard = ({
   onDelete,
   deleteType = "soft",
 }: Props) => {
+  const [editing, setEditing] = useState(false);
+  const [value, setValue] = useState(content.content);
+
   const formattedTime = new Intl.DateTimeFormat("en-US", {
     hour: "numeric",
     minute: "2-digit",
@@ -29,21 +35,33 @@ export const ThoughtCard = ({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      setEditing(false);
+    }
+  };
+
   return (
     <Card.Root
       position="relative"
       className="group"
       transition="border-color 0.15s ease"
-      _hover={{ borderColor: "whiteAlpha.400" }}
       variant="subtle"
       size="sm"
       bg="#ffffff"
-      border="1px solid"
-      borderColor="#c2c8c254"
+      border={editing ? "1px solid #4D6055" : "1px solid #c2c8c254"}
       borderRadius={16}
       padding={4}
+      onDoubleClick={() => setEditing(true)}
     >
-      <ActionButton icon={<GoX />} onClick={deleteThought} />
+      <VStack position="absolute" top="-11px" right="-11px" gap={2}>
+        <ActionButton icon={<GoX />} onClick={deleteThought} />
+        <ActionButton
+          icon={<MdOutlineEdit />}
+          onClick={() => setEditing(true)}
+        />
+      </VStack>
       <Card.Body display="flex" flexDirection="column" gap={2} px={6} py={3}>
         <HStack gap={2}>
           <Text
@@ -59,9 +77,35 @@ export const ThoughtCard = ({
             {formattedTime}
           </Text>
         </HStack>
-        <Text fontWeight={500} color="black" fontSize="lg" lineHeight="snug">
-          {content.content}
-        </Text>
+        {editing ? (
+          <Textarea
+            autoresize
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onBlur={() => setEditing(false)}
+            autoFocus
+            p={0}
+            border="none"
+            outline="none"
+            resize="none"
+            fontSize="lg"
+            lineHeight="initial"
+            fontWeight={500}
+            color="black"
+            variant="flushed"
+            _focus={{ boxShadow: "none" }}
+          />
+        ) : (
+          <Text
+            fontWeight={500}
+            color="black"
+            fontSize="lg"
+            lineHeight="initial"
+          >
+            {value}
+          </Text>
+        )}
       </Card.Body>
     </Card.Root>
   );
