@@ -12,7 +12,7 @@ import {
 } from "./thoughts";
 
 export async function handleAddThought(content: string) {
-  throw new Error("Simulated error for testing 1.0.1");
+  throw new Error("Simulated error for testing 1.0.2");
   if (!content.trim()) {
     return { success: false, error: "Content cannot be empty" };
   }
