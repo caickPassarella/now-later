@@ -7,15 +7,24 @@ import { toaster } from "./toaster";
 import { GoX } from "react-icons/go";
 import { MdOutlineEdit } from "react-icons/md";
 
+type DeleteAction = (
+  id: number,
+  deleteType?: string,
+) => Promise<{ success: boolean; error?: string } | undefined>;
+
 type Props = {
-  content: { id: number; content: string; createdAt: Date };
+  content: { id: number; content: string; createdAt: Date; occurredAt?: Date | null };
   onDelete?: (id: number) => void;
   deleteType?: "soft" | "hard";
+  deleteAction?: DeleteAction;
+  label?: string;
 };
 export const ThoughtCard = ({
   content,
   onDelete,
   deleteType = "soft",
+  deleteAction = handleDeleteThought,
+  label = "Thought",
 }: Props) => {
   const [editing, setEditing] = useState(false);
   const [value, setValue] = useState(content.content);
@@ -24,11 +33,11 @@ export const ThoughtCard = ({
     hour: "numeric",
     minute: "2-digit",
     hour12: false,
-  }).format(new Date(content.createdAt));
+  }).format(new Date(content.occurredAt ?? content.createdAt));
 
   const deleteThought = async () => {
     onDelete?.(content.id);
-    const result = await handleDeleteThought(content.id, deleteType);
+    const result = await deleteAction(content.id, deleteType);
 
     if (result?.success === false) {
       toaster.create({ type: "error", title: result.error });
@@ -71,7 +80,7 @@ export const ThoughtCard = ({
             textTransform="uppercase"
             letterSpacing="wide"
           >
-            Thought
+            {label}
           </Text>
           <Text fontSize="xs" color="#4d6055b6">
             {formattedTime}

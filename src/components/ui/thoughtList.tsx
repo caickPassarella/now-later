@@ -9,16 +9,26 @@ type Thought = {
   content: string;
   createdAt: Date;
   deletedAt?: Date | null;
+  occurredAt?: Date | null;
 };
+
+type DeleteAction = (
+  id: number,
+  deleteType?: string,
+) => Promise<{ success: boolean; error?: string } | undefined>;
 
 export const ThoughtList = ({
   thoughts: initial,
   groupBy = "createdAt",
   deleteType = "soft",
+  deleteAction,
+  label,
 }: {
   thoughts: Thought[];
-  groupBy?: "createdAt" | "deletedAt";
+  groupBy?: "createdAt" | "deletedAt" | "hour";
   deleteType?: "soft" | "hard";
+  deleteAction?: DeleteAction;
+  label?: string;
 }) => {
   const [thoughts, setThoughts] = useState(initial);
 
@@ -31,8 +41,17 @@ export const ThoughtList = ({
 
   const grouped = thoughts.reduce(
     (acc, t) => {
-      const date = t[groupBy] ?? t.createdAt;
-      const key = new Date(date).toDateString();
+      let key: string;
+      if (groupBy === "hour") {
+        const dateToUse = t.occurredAt ?? t.createdAt;
+        key = new Intl.DateTimeFormat("en-US", {
+          hour: "numeric",
+          hour12: true,
+        }).format(new Date(dateToUse));
+      } else {
+        const date = t[groupBy] ?? t.createdAt;
+        key = new Date(date).toDateString();
+      }
       (acc[key] ??= []).push(t);
       return acc;
     },
@@ -63,7 +82,7 @@ export const ThoughtList = ({
                 exit={{ opacity: 0, x: -16, scale: 0.97 }}
                 transition={{ duration: 0.18, ease: "easeOut" }}
               >
-                <ThoughtCard content={thought} onDelete={remove} deleteType={deleteType} />
+                <ThoughtCard content={thought} onDelete={remove} deleteType={deleteType} deleteAction={deleteAction} label={label} />
               </motion.div>
             ))}
           </AnimatePresence>

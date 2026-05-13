@@ -8,6 +8,7 @@ const NavLink = chakra(NextLink);
 
 const links = [
   { label: "Thoughts", href: "/" },
+  { label: "Daily", href: "/daily" },
   { label: "Deleted", href: "/deleted" },
 ];
 

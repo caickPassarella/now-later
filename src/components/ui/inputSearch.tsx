@@ -5,11 +5,15 @@ import { GoSearch } from "react-icons/go";
 import { handleAddThought } from "@/lib/actions";
 import { toaster } from "./toaster";
 
-export const InputSearch = () => {
+type AddAction = (
+  content: string,
+) => Promise<{ success: boolean; error?: string } | undefined>;
+
+export const InputSearch = ({ action = handleAddThought }: { action?: AddAction }) => {
   const [inputValue, setInputValue] = useState("");
 
   const addThought = async (text: string) => {
-    const result = await handleAddThought(text);
+    const result = await action(text);
     if (result?.success === false) {
       toaster.create({ type: "error", title: result.error });
       return;
@@ -22,7 +26,7 @@ export const InputSearch = () => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && inputValue.trim()) {
+    if (e.key === "Enter") {
       addThought(inputValue);
     }
   };

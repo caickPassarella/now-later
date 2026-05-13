@@ -18,3 +18,11 @@ model Thought {
   createdAt DateTime @default(now())
   deletedAt DateTime?
 }
+
+model Daily {
+  id         Int       @id @default(autoincrement())
+  content    String
+  createdAt  DateTime  @default(now())
+  deletedAt  DateTime?
+  occurredAt DateTime?
+}
