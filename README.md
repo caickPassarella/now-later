@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# now-later
 
-## Getting Started
+A personal memory aid app. Built to help with focus and memory — quickly log anything worth remembering, then look it up later by browsing or searching.
 
-First, run the development server:
+## Features
+
+- **Thoughts** — log anything on your mind as it happens; searchable so you can look back at what you were thinking on any given day
+- **Daily** — log activities as you do them throughout the day; browse past days with forward/back navigation
+- **Trash** — soft-deleted entries are kept and can be permanently removed from the deleted page
+- Persistent storage via SQLite + Prisma
+- Monitoring via AppSignal
+
+## Stack
+
+- [Next.js](https://nextjs.org/) 16 (App Router)
+- [Chakra UI](https://chakra-ui.com/) v3
+- [Prisma](https://www.prisma.io/) 7 with SQLite (better-sqlite3)
+- [AppSignal](https://www.appsignal.com/) for error tracking and metrics
+
+## Getting started
+
+**1. Install dependencies**
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**2. Set up environment variables**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Copy `.env.example` to `.env` and fill in the required values (database path, AppSignal push API key).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**3. Run database migrations**
 
-## Learn More
+```bash
+pnpm prisma migrate dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+**4. Start the dev server**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open [http://localhost:3000](http://localhost:3000).
 
-## Deploy on Vercel
+## Database
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The schema lives in [src/prisma/schema.prisma](src/prisma/schema.prisma). To regenerate the Prisma client after schema changes:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm prisma generate
+```
