@@ -4,7 +4,7 @@ A personal memory aid app. Built to help with focus and memory — quickly log a
 
 ## Features
 
-- **Thoughts** — log anything on your mind as it happens; searchable so you can look back at what you were thinking on any given day
+- **Thoughts** — log anything on your mind that you'd like to remember later; searchable so you can look back at what you were thinking on any given day
 - **Daily** — log activities as you do them throughout the day; browse past days with forward/back navigation
 - **Trash** — soft-deleted entries are kept and can be permanently removed from the deleted page
 - Persistent storage via SQLite + Prisma
