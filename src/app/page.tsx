@@ -1,6 +1,6 @@
 import { Container, Stack } from "@chakra-ui/react";
 import { getThoughts } from "@/lib/thoughts";
-import { ThoughtList } from "@/components/ui/thoughtList";
+import { EntryList } from "@/components/ui/entryList";
 import { InputSearch } from "@/components/ui/inputSearch";
 import { DateTitle } from "@/components/ui/dateTitle";
 import { logger } from "@/lib/logger";
@@ -15,7 +15,7 @@ const Home = async () => {
       <Stack gap={8}>
         <DateTitle />
         <InputSearch />
-        <ThoughtList thoughts={thoughts} deleteType="soft" />
+        <EntryList entries={thoughts} deleteType="soft" />
       </Stack>
     </Container>
   );

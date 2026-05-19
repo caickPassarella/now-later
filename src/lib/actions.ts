@@ -10,11 +10,7 @@ import {
   softDeleteThought,
   deleteThought,
 } from "./thoughts";
-import {
-  addDailyEntry,
-  softDeleteDailyEntry,
-  deleteDailyEntry,
-} from "./daily";
+import { addDailyEntry, softDeleteDailyEntry, deleteDailyEntry } from "./daily";
 
 export async function handleAddThought(content: string) {
   if (!content.trim()) {

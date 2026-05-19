@@ -1,5 +1,5 @@
 import { Container, Stack } from "@chakra-ui/react";
-import { ThoughtList } from "@/components/ui/thoughtList";
+import { EntryList } from "@/components/ui/entryList";
 import { DateTitle } from "@/components/ui/dateTitle";
 import { getDeletedThoughts } from "@/lib/thoughts";
 import { logger } from "@/lib/logger";
@@ -13,8 +13,8 @@ const Deleted = async () => {
     <Container maxW="container.lg" py={10}>
       <Stack gap={8}>
         <DateTitle />
-        <ThoughtList
-          thoughts={thoughts}
+        <EntryList
+          entries={thoughts}
           groupBy="deletedAt"
           deleteType="hard"
         />

@@ -6,20 +6,16 @@ import { handleDeleteThought } from "@/lib/actions";
 import { toaster } from "./toaster";
 import { GoX } from "react-icons/go";
 import { MdOutlineEdit } from "react-icons/md";
-
-type DeleteAction = (
-  id: number,
-  deleteType?: string,
-) => Promise<{ success: boolean; error?: string } | undefined>;
+import type { DeleteAction, Entry } from "@/lib/types";
 
 type Props = {
-  content: { id: number; content: string; createdAt: Date; occurredAt?: Date | null };
+  content: Entry;
   onDelete?: (id: number) => void;
   deleteType?: "soft" | "hard";
   deleteAction?: DeleteAction;
   label?: string;
 };
-export const ThoughtCard = ({
+export const EntryCard = ({
   content,
   onDelete,
   deleteType = "soft",
@@ -35,7 +31,7 @@ export const ThoughtCard = ({
     hour12: false,
   }).format(new Date(content.occurredAt ?? content.createdAt));
 
-  const deleteThought = async () => {
+  const deleteEntry = async () => {
     onDelete?.(content.id);
     const result = await deleteAction(content.id, deleteType);
 
@@ -65,7 +61,7 @@ export const ThoughtCard = ({
       onDoubleClick={() => setEditing(true)}
     >
       <VStack position="absolute" top="-11px" right="-11px" gap={2}>
-        <ActionButton icon={<GoX />} onClick={deleteThought} />
+        <ActionButton icon={<GoX />} onClick={deleteEntry} />
         <ActionButton
           icon={<MdOutlineEdit />}
           onClick={() => setEditing(true)}

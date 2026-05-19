@@ -2,60 +2,48 @@
 import { Separator, HStack, Stack, Text } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { ThoughtCard } from "./thoughtCard";
+import { EntryCard } from "./entryCard";
+import type { DeleteAction, Entry } from "@/lib/types";
 
-type Thought = {
-  id: number;
-  content: string;
-  createdAt: Date;
-  deletedAt?: Date | null;
-  occurredAt?: Date | null;
-};
-
-type DeleteAction = (
-  id: number,
-  deleteType?: string,
-) => Promise<{ success: boolean; error?: string } | undefined>;
-
-export const ThoughtList = ({
-  thoughts: initial,
+export const EntryList = ({
+  entries: initial,
   groupBy = "createdAt",
   deleteType = "soft",
   deleteAction,
   label,
 }: {
-  thoughts: Thought[];
+  entries: Entry[];
   groupBy?: "createdAt" | "deletedAt" | "hour";
   deleteType?: "soft" | "hard";
   deleteAction?: DeleteAction;
   label?: string;
 }) => {
-  const [thoughts, setThoughts] = useState(initial);
+  const [entries, setEntries] = useState(initial);
 
   useEffect(() => {
-    setThoughts(initial);
+    setEntries(initial);
   }, [initial]);
 
   const remove = (id: number) =>
-    setThoughts((prev) => prev.filter((t) => t.id !== id));
+    setEntries((prev) => prev.filter((e) => e.id !== id));
 
-  const grouped = thoughts.reduce(
-    (acc, t) => {
+  const grouped = entries.reduce(
+    (acc, e) => {
       let key: string;
       if (groupBy === "hour") {
-        const dateToUse = t.occurredAt ?? t.createdAt;
+        const dateToUse = e.occurredAt ?? e.createdAt;
         key = new Intl.DateTimeFormat("en-US", {
           hour: "numeric",
           hour12: true,
         }).format(new Date(dateToUse));
       } else {
-        const date = t[groupBy] ?? t.createdAt;
+        const date = e[groupBy] ?? e.createdAt;
         key = new Date(date).toDateString();
       }
-      (acc[key] ??= []).push(t);
+      (acc[key] ??= []).push(e);
       return acc;
     },
-    {} as Record<string, Thought[]>,
+    {} as Record<string, Entry[]>,
   );
 
   return (
@@ -74,15 +62,15 @@ export const ThoughtList = ({
             <Separator flex={1} borderColor="#c2c8c254" />
           </HStack>
           <AnimatePresence>
-            {group.map((thought) => (
+            {group.map((entry) => (
               <motion.div
-                key={thought.id}
+                key={entry.id}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -16, scale: 0.97 }}
                 transition={{ duration: 0.18, ease: "easeOut" }}
               >
-                <ThoughtCard content={thought} onDelete={remove} deleteType={deleteType} deleteAction={deleteAction} label={label} />
+                <EntryCard content={entry} onDelete={remove} deleteType={deleteType} deleteAction={deleteAction} label={label} />
               </motion.div>
             ))}
           </AnimatePresence>

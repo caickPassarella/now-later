@@ -1,6 +1,6 @@
 import { Container, Stack } from "@chakra-ui/react";
 import { getDailyEntriesByDate } from "@/lib/daily";
-import { ThoughtList } from "@/components/ui/thoughtList";
+import { EntryList } from "@/components/ui/entryList";
 import { DailyInput } from "@/components/ui/dailyInput";
 import { DailyNav } from "@/components/ui/dailyNav";
 import { handleDeleteDaily } from "@/lib/actions";
@@ -27,8 +27,8 @@ const Daily = async ({
       <Stack gap={8}>
         <DailyNav date={date} />
         <DailyInput date={date} />
-        <ThoughtList
-          thoughts={entries}
+        <EntryList
+          entries={entries}
           groupBy="hour"
           deleteType="soft"
           deleteAction={handleDeleteDaily}
