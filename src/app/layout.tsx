@@ -4,6 +4,7 @@ import { Provider } from "@/components/ui/provider";
 import { Flex, Box } from "@chakra-ui/react";
 import { Toaster } from "@/components/ui/toaster";
 import { Sidebar } from "@/components/ui/sidebar";
+import { AppSignalErrorBoundary } from "@/components/appsignal-error-boundary";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,13 +34,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable}`}
       >
         <Provider>
-          <Toaster />
-          <Flex minH="100vh" bg="gray.100">
-            <Sidebar />
-            <Box flex={1} bg="#F8FAF9" p={25} ml="80">
-              {children}
-            </Box>
-          </Flex>
+          <AppSignalErrorBoundary>
+            <Toaster />
+            <Flex minH="100vh" bg="gray.100">
+              <Sidebar />
+              <Box flex={1} bg="#F8FAF9" p={25} ml="80">
+                {children}
+              </Box>
+            </Flex>
+          </AppSignalErrorBoundary>
         </Provider>
       </body>
     </html>

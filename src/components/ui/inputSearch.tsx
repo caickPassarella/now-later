@@ -9,7 +9,11 @@ type AddAction = (
   content: string,
 ) => Promise<{ success: boolean; error?: string } | undefined>;
 
-export const InputSearch = ({ action = handleAddThought }: { action?: AddAction }) => {
+export const InputSearch = ({
+  action = handleAddThought,
+}: {
+  action?: AddAction;
+}) => {
   const [inputValue, setInputValue] = useState("");
 
   const addThought = async (text: string) => {

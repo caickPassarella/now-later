@@ -4,8 +4,10 @@ import { EntryList } from "@/components/ui/entryList";
 import { InputSearch } from "@/components/ui/inputSearch";
 import { DateTitle } from "@/components/ui/dateTitle";
 import { logger } from "@/lib/logger";
+import { appsignal } from "@/appsignal.cjs";
 
 const Home = async () => {
+  appsignal.metrics().incrementCounter("page_visits", 1, { page: "thoughts" });
   const thoughts = await getThoughts().catch((e) => {
     logger.error("Failed to fetch thoughts", { error: String(e) });
     throw e;

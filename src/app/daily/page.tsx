@@ -5,12 +5,14 @@ import { DailyInput } from "@/components/ui/dailyInput";
 import { DailyNav } from "@/components/ui/dailyNav";
 import { handleDeleteDaily } from "@/lib/actions";
 import { logger } from "@/lib/logger";
+import { appsignal } from "@/appsignal.cjs";
 
 const Daily = async ({
   searchParams,
 }: {
   searchParams: Promise<{ date?: string }>;
 }) => {
+  appsignal.metrics().incrementCounter("page_visits", 1, { page: "daily" });
   const { date: dateParam } = await searchParams;
 
   const todayStr = new Date().toLocaleDateString("en-CA");

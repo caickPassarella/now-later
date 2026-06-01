@@ -1,11 +1,13 @@
-import { Appsignal } from "@appsignal/nodejs";
+const { Appsignal } = require("@appsignal/nodejs");
+const { version } = require("../package.json");
 
-export const appsignal = new Appsignal({
+const appsignal = new Appsignal({
   active: true,
-  revision: "1.0.5",
   name: "Next.js App",
+  revision: version,
+  environment: process.env.NODE_ENV,
   pushApiKey: process.env.APPSIGNAL_PUSH_API_KEY,
   disableDefaultInstrumentations: ["@opentelemetry/instrumentation-http"],
 });
 
-console.log("AppSignal initialized");
+module.exports = { appsignal };
