@@ -13,10 +13,12 @@ datasource db {
 }
 
 model Thought {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   content   String
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
   deletedAt DateTime?
+
+  @@index([deletedAt])
 }
 
 model Daily {
@@ -25,4 +27,7 @@ model Daily {
   createdAt  DateTime  @default(now())
   deletedAt  DateTime?
   occurredAt DateTime?
+
+  @@index([occurredAt])
+  @@index([deletedAt])
 }

@@ -1,27 +1,32 @@
+import { unstable_cache } from "next/cache";
 import { prisma } from "./db";
 import { logger } from "./logger";
 
-export const getThoughts = async () => {
-  const thought = await prisma.thought.findMany({
-    where: { deletedAt: null },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-  logger.info("Fetched thoughts", { count: thought.length });
-  return thought;
-};
+export const getThoughts = unstable_cache(
+  async () => {
+    const thought = await prisma.thought.findMany({
+      where: { deletedAt: null },
+      orderBy: { createdAt: "desc" },
+    });
+    logger.info("Fetched thoughts", { count: thought.length });
+    return thought;
+  },
+  ["thoughts"],
+  { tags: ["thoughts"] },
+);
 
-export const getDeletedThoughts = async () => {
-  const thought = await prisma.thought.findMany({
-    where: { deletedAt: { not: null } },
-    orderBy: {
-      deletedAt: "desc",
-    },
-  });
-  logger.info("Fetched deleted thoughts", { count: thought.length });
-  return thought;
-};
+export const getDeletedThoughts = unstable_cache(
+  async () => {
+    const thought = await prisma.thought.findMany({
+      where: { deletedAt: { not: null } },
+      orderBy: { deletedAt: "desc" },
+    });
+    logger.info("Fetched deleted thoughts", { count: thought.length });
+    return thought;
+  },
+  ["deleted-thoughts"],
+  { tags: ["deleted"] },
+);
 
 export const countThoughts = async () => {
   return prisma.thought.count({ where: { deletedAt: null } });

@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { prisma } from "./db";
 import { logger } from "./logger";
 
@@ -10,17 +11,21 @@ export const getDailyEntries = async () => {
   return entries;
 };
 
-export const getDailyEntriesByDate = async (dateStr: string) => {
-  const [y, m, d] = dateStr.split("-").map(Number);
-  const start = new Date(y, m - 1, d, 0, 0, 0, 0);
-  const end = new Date(y, m - 1, d, 23, 59, 59, 999);
-  const entries = await prisma.daily.findMany({
-    where: { deletedAt: null, occurredAt: { gte: start, lte: end } },
-    orderBy: { occurredAt: "asc" },
-  });
-  logger.info("Fetched daily entries by date", { date: dateStr, count: entries.length });
-  return entries;
-};
+export const getDailyEntriesByDate = unstable_cache(
+  async (dateStr: string) => {
+    const [y, m, d] = dateStr.split("-").map(Number);
+    const start = new Date(y, m - 1, d, 0, 0, 0, 0);
+    const end = new Date(y, m - 1, d, 23, 59, 59, 999);
+    const entries = await prisma.daily.findMany({
+      where: { deletedAt: null, occurredAt: { gte: start, lte: end } },
+      orderBy: { occurredAt: "asc" },
+    });
+    logger.info("Fetched daily entries by date", { date: dateStr, count: entries.length });
+    return entries;
+  },
+  ["daily-entries-by-date"],
+  { tags: ["daily"] },
+);
 
 export const addDailyEntry = async (content: string, occurredAt?: Date) => {
   const entry = await prisma.daily.create({
