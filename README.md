@@ -19,24 +19,21 @@ A personal memory aid app. Built to help with focus and memory — quickly log a
 
 ## Getting started
 
-**1. Clone and install dependencies**
+**1. Install dependencies**
 
 ```bash
-git clone <your-repo>
-cd now-later
 npm install
 ```
 
 **2. Set up environment variables**
 
-Create a `.env` file in the project root:
+Copy `.env.example` to `.env` and fill in your credentials:
 
-```
-DATABASE_URL="libsql://your-db.turso.io"
-TURSO_AUTH_TOKEN="your-token-here"
+```bash
+cp .env.example .env
 ```
 
-You can find your database URL in the [Turso dashboard](https://app.turso.tech) or via the CLI — run `turso auth login` first if on a new device, then `turso db show now-later`. To generate a token: `turso db tokens create now-later`.
+You can find your Turso database URL in the [Turso dashboard](https://app.turso.tech) or via the CLI — run `turso auth login` first if on a new device, then `turso db show now-later`. To generate a token: `turso db tokens create now-later`.
 
 **3. Generate the Prisma client**
 
