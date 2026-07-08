@@ -3,7 +3,6 @@
 import { appsignal } from "../appsignal.cjs";
 import { logger } from "./logger";
 
-import { updateTag } from "next/cache";
 import {
   addThought,
   countThoughts,
@@ -20,12 +19,15 @@ export async function handleAddThought(content: string) {
   if (content.length > 5000) {
     return { success: false, error: "Content is too long" };
   }
+
   try {
-    await addThought(content);
+    const entry = await addThought(content);
+
     appsignal.metrics().incrementCounter("thoughts", 1);
     const total = await countThoughts();
     appsignal.metrics().setGauge("thoughts_total", total);
-    updateTag("thoughts");
+
+    return { success: true, entry };
   } catch (e) {
     logger.error("Failed to add thought", { error: String(e) });
     return { success: false, error: "Failed to add thought" };
@@ -42,8 +44,8 @@ export async function handleAddDaily(content: string, occurredAt?: string) {
   }
   try {
     const parsedOccurredAt = occurredAt ? new Date(occurredAt) : undefined;
-    await addDailyEntry(content, parsedOccurredAt);
-    updateTag("daily");
+    const entry = await addDailyEntry(content, parsedOccurredAt);
+    return { success: true, entry };
   } catch (e) {
     logger.error("Failed to add daily entry", { error: String(e) });
     return { success: false, error: "Failed to add daily entry" };
@@ -63,7 +65,6 @@ export async function handleDeleteDaily(
     } else if (deleteType === "hard") {
       await deleteDailyEntry(id);
     }
-    updateTag("daily");
   } catch (e) {
     logger.error("Failed to delete daily entry", { error: String(e) });
     return { success: false, error: "Failed to delete daily entry" };
@@ -80,11 +81,8 @@ export async function handleDeleteThought(
   try {
     if (deleteType === "soft") {
       await softDeleteThought(id);
-      updateTag("thoughts");
-      updateTag("deleted");
     } else if (deleteType === "hard") {
       await deleteThought(id);
-      updateTag("deleted");
     }
     appsignal
       .metrics()

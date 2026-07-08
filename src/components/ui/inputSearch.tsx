@@ -2,27 +2,19 @@
 import { useState } from "react";
 import { Input, InputGroup } from "@chakra-ui/react";
 import { GoSearch } from "react-icons/go";
-import { handleAddThought } from "@/lib/actions";
-import { toaster } from "./toaster";
 
-type AddAction = (
-  content: string,
-) => Promise<{ success: boolean; error?: string } | undefined>;
+type AddAction = (content: string) => Promise<void>;
 
-export const InputSearch = ({
-  action = handleAddThought,
-}: {
-  action?: AddAction;
-}) => {
+type inputSearchProps = {
+  action: AddAction;
+};
+
+export const InputSearch = ({ action }: inputSearchProps) => {
   const [inputValue, setInputValue] = useState("");
 
   const addThought = async (text: string) => {
-    const result = await action(text);
-    if (result?.success === false) {
-      toaster.create({ type: "error", title: result.error });
-      return;
-    }
     setInputValue("");
+    await action(text);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

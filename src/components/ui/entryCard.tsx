@@ -8,7 +8,7 @@ import { GoX } from "react-icons/go";
 import { MdOutlineEdit } from "react-icons/md";
 import type { DeleteAction, Entry } from "@/lib/types";
 
-type Props = {
+type EntryCardProps = {
   content: Entry;
   onDelete?: (id: number) => void;
   deleteType?: "soft" | "hard";
@@ -21,7 +21,7 @@ export const EntryCard = ({
   deleteType = "soft",
   deleteAction = handleDeleteThought,
   label = "Thought",
-}: Props) => {
+}: EntryCardProps) => {
   const [editing, setEditing] = useState(false);
   const [value, setValue] = useState(content.content);
 

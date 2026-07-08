@@ -1,8 +1,7 @@
 import { Container, Stack } from "@chakra-ui/react";
 import { getThoughts } from "@/lib/thoughts";
-import { EntryList } from "@/components/ui/entryList";
-import { InputSearch } from "@/components/ui/inputSearch";
 import { DateTitle } from "@/components/ui/dateTitle";
+import { ThoughtFeed } from "@/components/ui/thoughtFeed";
 import { logger } from "@/lib/logger";
 import { appsignal } from "@/appsignal.cjs";
 
@@ -16,8 +15,7 @@ const Home = async () => {
     <Container maxW="container.lg" py={10}>
       <Stack gap={8}>
         <DateTitle />
-        <InputSearch />
-        <EntryList entries={thoughts} deleteType="soft" />
+        <ThoughtFeed entries={thoughts} />
       </Stack>
     </Container>
   );

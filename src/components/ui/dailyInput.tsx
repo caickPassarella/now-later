@@ -2,15 +2,20 @@
 import { useState, useRef, useEffect } from "react";
 import { Input, InputGroup, HStack, Text, VStack } from "@chakra-ui/react";
 import { GoSearch } from "react-icons/go";
-import { handleAddDaily } from "@/lib/actions";
-import { toaster } from "./toaster";
 
 const currentTimeStr = () => {
   const now = new Date();
   return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
 };
 
-export const DailyInput = ({ date }: { date: string }) => {
+type AddAction = (content: string, occurredAt: string) => Promise<void>;
+
+type DailyInputProps = {
+  date: string;
+  onAdd: AddAction;
+};
+
+export const DailyInput = ({ date, onAdd }: DailyInputProps) => {
   const [text, setText] = useState("");
   const [time, setTime] = useState(currentTimeStr);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -35,11 +40,7 @@ export const DailyInput = ({ date }: { date: string }) => {
     const [year, month, day] = date.split("-").map(Number);
     const occurredAt = new Date(year, month - 1, day, hours, minutes, 0, 0);
 
-    const result = await handleAddDaily(text, occurredAt.toISOString());
-    if (result?.success === false) {
-      toaster.create({ type: "error", title: result.error });
-      return;
-    }
+    await onAdd(text, occurredAt.toISOString());
     setText("");
     setTime(currentTimeStr());
     inputRef.current?.focus();

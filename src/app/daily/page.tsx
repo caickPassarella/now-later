@@ -1,9 +1,7 @@
 import { Container, Stack } from "@chakra-ui/react";
 import { getDailyEntriesByDate } from "@/lib/daily";
-import { EntryList } from "@/components/ui/entryList";
-import { DailyInput } from "@/components/ui/dailyInput";
+import { DailyFeed } from "@/components/ui/dailyFeed";
 import { DailyNav } from "@/components/ui/dailyNav";
-import { handleDeleteDaily } from "@/lib/actions";
 import { logger } from "@/lib/logger";
 import { appsignal } from "@/appsignal.cjs";
 
@@ -28,14 +26,7 @@ const Daily = async ({
     <Container maxW="container.lg" py={10}>
       <Stack gap={8}>
         <DailyNav date={date} />
-        <DailyInput date={date} />
-        <EntryList
-          entries={entries}
-          groupBy="hour"
-          deleteType="soft"
-          deleteAction={handleDeleteDaily}
-          label="Daily"
-        />
+        <DailyFeed entries={entries} date={date} />
       </Stack>
     </Container>
   );
