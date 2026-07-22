@@ -6,13 +6,13 @@ const globalForPrisma = global as unknown as {
 };
 
 const adapter = new PrismaLibSql({
-  url: process.env.DATABASE_URL!,
+  url: "file:./local-replica.db",
+  syncUrl: process.env.DATABASE_URL!,
   authToken: process.env.TURSO_AUTH_TOKEN,
 });
+
 export const prisma =
   globalForPrisma.prisma ||
-  new PrismaClient({
-    adapter,
-  });
+  new PrismaClient({ adapter });
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;

@@ -26,7 +26,7 @@ const Daily = async ({
     <Container maxW="container.lg" py={10}>
       <Stack gap={8}>
         <DailyNav date={date} />
-        <DailyFeed entries={entries} date={date} />
+        <DailyFeed key={date} entries={entries} date={date} />
       </Stack>
     </Container>
   );

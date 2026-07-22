@@ -40,10 +40,10 @@ export const DailyInput = ({ date, onAdd }: DailyInputProps) => {
     const [year, month, day] = date.split("-").map(Number);
     const occurredAt = new Date(year, month - 1, day, hours, minutes, 0, 0);
 
-    await onAdd(text, occurredAt.toISOString());
     setText("");
     setTime(currentTimeStr());
     inputRef.current?.focus();
+    await onAdd(text, occurredAt.toISOString());
   };
 
   return (
