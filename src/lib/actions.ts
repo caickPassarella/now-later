@@ -29,8 +29,15 @@ export async function handleAddThought(content: string) {
 
     return { success: true, entry };
   } catch (e) {
+    console.error("Failed to add thought", e);
     logger.error("Failed to add thought", { error: String(e) });
-    return { success: false, error: "Failed to add thought" };
+    return {
+      success: false,
+      error:
+        process.env.NODE_ENV === "development"
+          ? String(e)
+          : "Failed to add thought",
+    };
   }
 }
 
@@ -47,8 +54,15 @@ export async function handleAddDaily(content: string, occurredAt?: string) {
     const entry = await addDailyEntry(content, parsedOccurredAt);
     return { success: true, entry };
   } catch (e) {
+    console.error("Failed to add daily entry", e);
     logger.error("Failed to add daily entry", { error: String(e) });
-    return { success: false, error: "Failed to add daily entry" };
+    return {
+      success: false,
+      error:
+        process.env.NODE_ENV === "development"
+          ? String(e)
+          : "Failed to add daily entry",
+    };
   }
 }
 
@@ -66,8 +80,15 @@ export async function handleDeleteDaily(
       await deleteDailyEntry(id);
     }
   } catch (e) {
+    console.error("Failed to delete daily entry", e);
     logger.error("Failed to delete daily entry", { error: String(e) });
-    return { success: false, error: "Failed to delete daily entry" };
+    return {
+      success: false,
+      error:
+        process.env.NODE_ENV === "development"
+          ? String(e)
+          : "Failed to delete daily entry",
+    };
   }
 }
 
@@ -88,7 +109,14 @@ export async function handleDeleteThought(
       .metrics()
       .incrementCounter("thoughts_deleted", 1, { type: deleteType });
   } catch (e) {
+    console.error("Failed to delete thought", e);
     logger.error("Failed to delete thought", { error: String(e) });
-    return { success: false, error: "Failed to delete thought" };
+    return {
+      success: false,
+      error:
+        process.env.NODE_ENV === "development"
+          ? String(e)
+          : "Failed to delete thought",
+    };
   }
 }
