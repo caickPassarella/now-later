@@ -9,7 +9,12 @@ import {
   softDeleteThought,
   deleteThought,
 } from "./thoughts";
-import { addDailyEntry, softDeleteDailyEntry, deleteDailyEntry } from "./daily";
+import {
+  addDailyEntry,
+  softDeleteDailyEntry,
+  deleteDailyEntry,
+  countDailyEntries,
+} from "./daily";
 
 export async function handleAddThought(content: string) {
   if (!content.trim()) {
@@ -31,6 +36,7 @@ export async function handleAddThought(content: string) {
   } catch (e) {
     console.error("Failed to add thought", e);
     logger.error("Failed to add thought", { error: String(e) });
+
     return {
       success: false,
       error:
@@ -52,6 +58,11 @@ export async function handleAddDaily(content: string, occurredAt?: string) {
   try {
     const parsedOccurredAt = occurredAt ? new Date(occurredAt) : undefined;
     const entry = await addDailyEntry(content, parsedOccurredAt);
+
+    appsignal.metrics().incrementCounter("daily_entries", 1);
+    const total = await countDailyEntries();
+    appsignal.metrics().setGauge("daily_entries_total", total);
+
     return { success: true, entry };
   } catch (e) {
     console.error("Failed to add daily entry", e);
@@ -79,6 +90,9 @@ export async function handleDeleteDaily(
     } else if (deleteType === "hard") {
       await deleteDailyEntry(id);
     }
+    appsignal
+      .metrics()
+      .incrementCounter("daily_entries_deleted", 1, { type: deleteType });
   } catch (e) {
     console.error("Failed to delete daily entry", e);
     logger.error("Failed to delete daily entry", { error: String(e) });

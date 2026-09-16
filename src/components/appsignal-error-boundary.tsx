@@ -1,6 +1,7 @@
 "use client";
-import { ErrorBoundary } from "@appsignal/react";
-import { appsignalJs } from "@/lib/appsignal-client";
+import { captureError } from "@appsignal/browser";
+import { ErrorBoundary } from "@appsignal/browser/react";
+import "@/lib/appsignal-client";
 
 export function AppSignalErrorBoundary({
   children,
@@ -8,8 +9,6 @@ export function AppSignalErrorBoundary({
   children: React.ReactNode;
 }) {
   return (
-    <ErrorBoundary instance={appsignalJs} action="App">
-      {children}
-    </ErrorBoundary>
+    <ErrorBoundary captureError={captureError}>{children}</ErrorBoundary>
   );
 }

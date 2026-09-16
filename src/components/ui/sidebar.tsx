@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
+import { setRouteTemplate } from "@appsignal/browser";
+
 import {
   Box,
   chakra,
@@ -26,6 +29,10 @@ const links = [
 
 export const Sidebar = () => {
   const pathname = usePathname();
+
+  useEffect(() => {
+    setRouteTemplate(pathname);
+  }, [pathname]);
 
   return (
     <Box
@@ -69,7 +76,11 @@ export const Sidebar = () => {
         {links.map((link) => {
           const isActive = pathname === link.href;
           return (
-            <ChakraLink asChild key={link.href} _hover={{ textDecoration: "none" }}>
+            <ChakraLink
+              asChild
+              key={link.href}
+              _hover={{ textDecoration: "none" }}
+            >
               <NavLink
                 href={link.href}
                 display="block"

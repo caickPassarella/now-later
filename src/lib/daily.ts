@@ -22,7 +22,10 @@ export const getDailyEntriesByDate = async (dateStr: string) => {
       orderBy: { occurredAt: "asc" },
     }),
   );
-  logger.info("Fetched daily entries by date", { date: dateStr, count: entries.length });
+  logger.info("Fetched daily entries by date", {
+    date: dateStr,
+    count: entries.length,
+  });
   return entries;
 };
 
@@ -51,4 +54,8 @@ export const deleteDailyEntry = async (id: number) => {
   const entry = await withRetry(() => prisma.daily.delete({ where: { id } }));
   logger.info("Daily entry permanently deleted", { id: entry.id });
   return entry;
+};
+
+export const countDailyEntries = async () => {
+  return withRetry(() => prisma.daily.count({ where: { deletedAt: null } }));
 };

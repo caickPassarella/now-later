@@ -1,6 +1,6 @@
 {
   "name": "now-later",
-  "version": "0.1.4",
+  "version": "0.1.8",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,10 +10,8 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@appsignal/javascript": "^1.6.1",
+    "@appsignal/browser": "1.0.0-beta.4",
     "@appsignal/nodejs": "^3.7.4",
-    "@appsignal/plugin-window-events": "^1.0.26",
-    "@appsignal/react": "^1.0.31",
     "@chakra-ui/react": "^3.33.0",
     "@emotion/react": "^11.14.0",
     "@libsql/client": "^0.17.4",
