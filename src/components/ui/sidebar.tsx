@@ -1,8 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-import { setRouteTemplate } from "@appsignal/browser";
-
 import {
   Box,
   chakra,
@@ -29,10 +26,6 @@ const links = [
 
 export const Sidebar = () => {
   const pathname = usePathname();
-
-  useEffect(() => {
-    setRouteTemplate(pathname);
-  }, [pathname]);
 
   return (
     <Box

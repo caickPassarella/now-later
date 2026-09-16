@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Provider } from "@/components/ui/provider";
+import { EmotionRegistry } from "@/components/ui/emotion-registry";
 import { Flex, Box } from "@chakra-ui/react";
 import { Toaster } from "@/components/ui/toaster";
 import { Sidebar } from "@/components/ui/sidebar";
@@ -33,17 +34,19 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable}`}
       >
-        <Provider>
-          <AppSignalErrorBoundary>
-            <Toaster />
-            <Flex minH="100vh" bg="gray.100">
-              <Sidebar />
-              <Box flex={1} bg="#F8FAF9" p={25} ml="80">
-                {children}
-              </Box>
-            </Flex>
-          </AppSignalErrorBoundary>
-        </Provider>
+        <EmotionRegistry>
+          <Provider>
+            <AppSignalErrorBoundary>
+              <Toaster />
+              <Flex minH="100vh" bg="gray.100">
+                <Sidebar />
+                <Box flex={1} bg="#F8FAF9" p={25} ml="80">
+                  {children}
+                </Box>
+              </Flex>
+            </AppSignalErrorBoundary>
+          </Provider>
+        </EmotionRegistry>
       </body>
     </html>
   );
