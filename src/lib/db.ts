@@ -10,9 +10,7 @@ const adapter = new PrismaLibSql({
   authToken: process.env.TURSO_AUTH_TOKEN,
 });
 
-export const prisma =
-  globalForPrisma.prisma ||
-  new PrismaClient({ adapter });
+export const prisma = globalForPrisma.prisma || new PrismaClient({ adapter });
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
@@ -22,7 +20,9 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 // Disconnecting forces Prisma to create a fresh client/stream on the next call.
 function isStaleStreamError(e: unknown): boolean {
   const message = e instanceof Error ? e.message : String(e);
-  return /stream not found|stream has expired|STREAM_EXPIRED/i.test(message);
+  return /stream not found|stream has expired|STREAM_EXPIRED|SERVER_ERROR: Server returned HTTP status 400/i.test(
+    message,
+  );
 }
 
 export async function withRetry<T>(operation: () => Promise<T>): Promise<T> {

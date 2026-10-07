@@ -1,9 +1,9 @@
-import { prisma } from "@/lib/db";
+import { prisma, withRetry } from "@/lib/db";
 import { logger } from "@/lib/logger";
 
 export async function GET() {
   try {
-    await prisma.$queryRaw`SELECT 1`;
+    await withRetry(() => prisma.$queryRaw`SELECT 1`);
     console.log("Health check passed");
     return Response.json({ status: "ok", database: "connected" });
   } catch (error) {
