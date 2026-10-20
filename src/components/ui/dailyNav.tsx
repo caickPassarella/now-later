@@ -9,7 +9,9 @@ import {
   HStack,
   IconButton,
 } from "@chakra-ui/react";
+
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
+import { LuChevronLast } from "react-icons/lu";
 
 export const DailyNav = ({ date }: { date: string }) => {
   const router = useRouter();
@@ -46,6 +48,12 @@ export const DailyNav = ({ date }: { date: string }) => {
       if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
       const offset = e.key === "ArrowLeft" ? -1 : 1;
       if (offset === 1 && isToday) return;
+
+      if (e.key === "ArrowRight" && e.shiftKey) {
+        if (!isToday) router.push(`/daily?date=${todayStr}`);
+        return;
+      }
+
       const next = new Date(current);
       next.setDate(next.getDate() + offset);
       router.push(`/daily?date=${next.toLocaleDateString("en-CA")}`);
@@ -63,9 +71,6 @@ export const DailyNav = ({ date }: { date: string }) => {
           color="#73877B"
           aria-label="Previous day"
           onClick={() => navigate(-1)}
-          onKeyDown={(e) => {
-            if (e.key === "ArrowLeft") navigate(-1);
-          }}
         >
           <GoChevronLeft />
         </IconButton>
@@ -84,11 +89,18 @@ export const DailyNav = ({ date }: { date: string }) => {
           aria-label="Next day"
           onClick={() => navigate(1)}
           disabled={isToday}
-          onKeyDown={(e) => {
-            if (e.key === "ArrowRight") navigate(1);
-          }}
         >
           <GoChevronRight />
+        </IconButton>
+        <IconButton
+          variant="ghost"
+          size="sm"
+          color="#73877B"
+          aria-label="Skip to today"
+          onClick={() => router.push(`/daily?date=${todayStr}`)}
+          disabled={isToday}
+        >
+          <LuChevronLast />
         </IconButton>
       </HStack>
     </Center>
