@@ -8,6 +8,7 @@ const appsignal = new Appsignal({
   environment: process.env.NODE_ENV,
   pushApiKey: process.env.APPSIGNAL_PUSH_API_KEY,
   disableDefaultInstrumentations: ["@opentelemetry/instrumentation-http"],
+  ignoreActions: ["GET /api/health"],
 });
 
 module.exports = { appsignal };
