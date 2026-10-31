@@ -6,7 +6,7 @@ import { handleDeleteThought } from "@/lib/actions";
 import { toaster } from "./toaster";
 import { GoX } from "react-icons/go";
 import { MdOutlineEdit } from "react-icons/md";
-import type { DeleteAction, Entry } from "@/lib/types";
+import { getEntryDate, type DeleteAction, type Entry } from "@/lib/types";
 
 type EntryCardProps = {
   content: Entry;
@@ -29,7 +29,7 @@ export const EntryCard = ({
     hour: "numeric",
     minute: "2-digit",
     hour12: false,
-  }).format(new Date(content.occurredAt ?? content.createdAt));
+  }).format(getEntryDate(content));
 
   const deleteEntry = async () => {
     onDelete?.(content.id);

@@ -1,7 +1,16 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { Input, InputGroup, HStack, Text, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  Input,
+  InputGroup,
+  HStack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { GoSearch } from "react-icons/go";
+
+import { SelectTag } from "./selectTag";
 
 const currentTimeStr = () => {
   const now = new Date();
@@ -17,7 +26,8 @@ type DailyInputProps = {
 
 export const DailyInput = ({ date, onAdd }: DailyInputProps) => {
   const [text, setText] = useState("");
-  const [time, setTime] = useState(currentTimeStr);
+  const [time, setTime] = useState<string>(currentTimeStr);
+  const [tag, setTag] = useState<string>();
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -42,13 +52,33 @@ export const DailyInput = ({ date, onAdd }: DailyInputProps) => {
 
     setText("");
     setTime(currentTimeStr());
+    setTag(undefined);
     inputRef.current?.focus();
     await onAdd(text, occurredAt.toISOString());
   };
 
   return (
     <VStack gap={2} alignSelf="center" w="full" paddingBottom={10}>
-      <InputGroup startElement={<GoSearch />}>
+      <InputGroup
+        startElement={<GoSearch />}
+        endOffset="-190px"
+        endElement={
+          <HStack gap={2} pointerEvents="auto">
+            <SelectTag value={tag} onChange={setTag} />
+            <Button
+              size="sm"
+              borderRadius="full"
+              disabled={!text.trim()}
+              bg="#4D6055"
+              color="white"
+              _disabled={{ bg: "#c2c8c254", color: "#737874" }}
+              onClick={add}
+            >
+              Save
+            </Button>
+          </HStack>
+        }
+      >
         <Input
           ref={inputRef}
           padding={8}

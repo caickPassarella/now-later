@@ -3,7 +3,7 @@ import { Separator, HStack, Stack, Text } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { EntryCard } from "./entryCard";
-import type { DeleteAction, Entry } from "@/lib/types";
+import { getEntryDate, type DeleteAction, type Entry } from "@/lib/types";
 
 export const EntryList = ({
   entries: initial,
@@ -27,11 +27,10 @@ export const EntryList = ({
     (acc, e) => {
       let key: string;
       if (groupBy === "hour") {
-        const dateToUse = e.occurredAt ?? e.createdAt;
         key = new Intl.DateTimeFormat("en-US", {
           hour: "numeric",
           hour12: true,
-        }).format(new Date(dateToUse));
+        }).format(getEntryDate(e));
       } else {
         const date = e[groupBy] ?? e.createdAt;
         key = new Date(date).toDateString();
