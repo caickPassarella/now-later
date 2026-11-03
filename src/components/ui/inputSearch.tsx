@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
-import { Input, InputGroup } from "@chakra-ui/react";
+import { Input, InputGroup, HStack, Button } from "@chakra-ui/react";
 import { GoSearch } from "react-icons/go";
+
+import { SelectTag } from "./selectTag";
 
 type AddAction = (content: string) => Promise<void>;
 
@@ -11,9 +13,11 @@ type inputSearchProps = {
 
 export const InputSearch = ({ action }: inputSearchProps) => {
   const [inputValue, setInputValue] = useState("");
+  const [tag, setTag] = useState<string>();
 
   const addThought = async (text: string) => {
     setInputValue("");
+    setTag(undefined);
     await action(text);
   };
 
@@ -32,6 +36,23 @@ export const InputSearch = ({ action }: inputSearchProps) => {
       paddingBottom={12}
       alignSelf="center"
       startElement={<GoSearch />}
+      endOffset="-190px"
+      endElement={
+        <HStack gap={2} pointerEvents="auto">
+          <SelectTag value={tag} onChange={setTag} />
+          <Button
+            size="sm"
+            borderRadius="full"
+            disabled={!inputValue.trim() || !tag}
+            bg="#4D6055"
+            color="white"
+            _disabled={{ bg: "#c2c8c254", color: "#737874" }}
+            onClick={() => addThought(inputValue)}
+          >
+            Save
+          </Button>
+        </HStack>
+      }
     >
       <Input
         padding={8}
