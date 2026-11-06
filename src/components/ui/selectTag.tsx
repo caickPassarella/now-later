@@ -13,9 +13,10 @@ const TAGS: Tag[] = [
 type SelectTagProps = {
   value?: string;
   onChange: (value: string) => void;
+  tabIndex?: number;
 };
 
-export const SelectTag = ({ value, onChange }: SelectTagProps) => {
+export const SelectTag = ({ value, onChange, tabIndex }: SelectTagProps) => {
   const selected = TAGS.find((tag) => tag.value === value);
 
   return (
@@ -32,6 +33,7 @@ export const SelectTag = ({ value, onChange }: SelectTagProps) => {
           color="#737874"
           bg="white"
           fontWeight={400}
+          tabIndex={tabIndex}
         >
           {selected ? (
             <Box

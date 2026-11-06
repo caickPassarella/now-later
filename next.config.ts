@@ -2,9 +2,12 @@ import type { NextConfig } from "next";
 import { version } from "./package.json";
 
 const nextConfig: NextConfig = {
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, dev }) => {
     if (isServer) {
-      config.devtool = "eval-source-map";
+      // "eval-source-map" never emits a .js.map file, so Node's
+      // --enable-source-maps has nothing to resolve server stack traces
+      // against in production. Use a file-based map there instead.
+      config.devtool = dev ? "eval-source-map" : "source-map";
     }
 
     return config;

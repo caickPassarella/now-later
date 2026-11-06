@@ -43,7 +43,7 @@ export const InputSearch = ({ action }: inputSearchProps) => {
           <Button
             size="sm"
             borderRadius="full"
-            disabled={!inputValue.trim() || !tag}
+            disabled={!inputValue.trim()}
             bg="#4D6055"
             color="white"
             _disabled={{ bg: "#c2c8c254", color: "#737874" }}
