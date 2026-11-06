@@ -16,7 +16,11 @@ type DailyFeedProps = {
 export const DailyFeed = ({ entries, date }: DailyFeedProps) => {
   const [list, setList] = useState<ListEntry[]>(entries);
 
-  const handleAction = async (content: string, occurredAt: string) => {
+  const handleAction = async (
+    content: string,
+    occurredAt: string,
+    tag: string | undefined,
+  ) => {
     const tempId = Date.now();
 
     setList((prev) => [
@@ -26,11 +30,12 @@ export const DailyFeed = ({ entries, date }: DailyFeedProps) => {
         content,
         createdAt: new Date(),
         occurredAt: new Date(occurredAt),
+        tag,
         _key: tempId,
       },
     ]);
 
-    const result = await handleAddDaily(content, occurredAt);
+    const result = await handleAddDaily(content, occurredAt, tag);
 
     if (!result || result.success === false) {
       setList((prev) => prev.filter((e) => e._key !== tempId));

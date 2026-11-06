@@ -16,7 +16,10 @@ import {
   countDailyEntries,
 } from "./daily";
 
-export async function handleAddThought(content: string) {
+export async function handleAddThought(
+  content: string,
+  tag?: string | undefined,
+) {
   if (!content.trim()) {
     return { success: false, error: "Content cannot be empty" };
   }
@@ -26,7 +29,7 @@ export async function handleAddThought(content: string) {
   }
 
   try {
-    const entry = await addThought(content);
+    const entry = await addThought(content, tag);
 
     appsignal.metrics().incrementCounter("thoughts", 1);
     const total = await countThoughts();
@@ -47,7 +50,11 @@ export async function handleAddThought(content: string) {
   }
 }
 
-export async function handleAddDaily(content: string, occurredAt?: string) {
+export async function handleAddDaily(
+  content: string,
+  occurredAt?: string,
+  tag?: string | undefined,
+) {
   if (!content.trim()) {
     return { success: false, error: "Content cannot be empty" };
   }
@@ -57,7 +64,7 @@ export async function handleAddDaily(content: string, occurredAt?: string) {
   }
   try {
     const parsedOccurredAt = occurredAt ? new Date(occurredAt) : undefined;
-    const entry = await addDailyEntry(content, parsedOccurredAt);
+    const entry = await addDailyEntry(content, parsedOccurredAt, tag);
 
     appsignal.metrics().incrementCounter("daily_entries", 1);
     const total = await countDailyEntries();

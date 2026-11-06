@@ -25,9 +25,13 @@ export const getDailyEntriesByDate = async (dateStr: string) => {
   return entries;
 };
 
-export const addDailyEntry = async (content: string, occurredAt?: Date) => {
+export const addDailyEntry = async (
+  content: string,
+  occurredAt?: Date,
+  tag?: string | undefined,
+) => {
   const entry = await prisma.daily.create({
-    data: { content, ...(occurredAt && { occurredAt }) },
+    data: { content, tag, ...(occurredAt && { occurredAt }) },
   });
   logger.info("Daily entry added", { id: entry.id });
   return entry;

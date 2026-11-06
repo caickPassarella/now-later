@@ -5,7 +5,7 @@ import { GoSearch } from "react-icons/go";
 
 import { SelectTag } from "./selectTag";
 
-type AddAction = (content: string) => Promise<void>;
+type AddAction = (content: string, tag: string | undefined) => Promise<void>;
 
 type inputSearchProps = {
   action: AddAction;
@@ -17,8 +17,8 @@ export const InputSearch = ({ action }: inputSearchProps) => {
 
   const addThought = async (text: string) => {
     setInputValue("");
+    await action(text, tag);
     setTag(undefined);
-    await action(text);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

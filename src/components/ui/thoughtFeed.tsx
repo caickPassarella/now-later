@@ -15,15 +15,15 @@ type ThoughtFeedProps = {
 export const ThoughtFeed = ({ entries }: ThoughtFeedProps) => {
   const [list, setList] = useState<ListEntry[]>(entries);
 
-  const handleAction = async (content: string) => {
+  const handleAction = async (content: string, tag: string | undefined) => {
     const tempId = Date.now();
 
     setList((prev) => [
-      { id: tempId, content, createdAt: new Date(), _key: tempId },
+      { id: tempId, content, createdAt: new Date(), tag, _key: tempId },
       ...prev,
     ]);
 
-    const result = await handleAddThought(content);
+    const result = await handleAddThought(content, tag);
 
     if (!result.success) {
       setList((prev) => prev.filter((e) => e._key !== tempId));

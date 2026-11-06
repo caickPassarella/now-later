@@ -17,7 +17,11 @@ const currentTimeStr = () => {
   return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
 };
 
-type AddAction = (content: string, occurredAt: string) => Promise<void>;
+type AddAction = (
+  content: string,
+  occurredAt: string,
+  tag: string | undefined,
+) => Promise<void>;
 
 type DailyInputProps = {
   date: string;
@@ -52,9 +56,9 @@ export const DailyInput = ({ date, onAdd }: DailyInputProps) => {
 
     setText("");
     setTime(currentTimeStr());
-    setTag(undefined);
     inputRef.current?.focus();
-    await onAdd(text, occurredAt.toISOString());
+    await onAdd(text, occurredAt.toISOString(), tag);
+    setTag(undefined);
   };
 
   return (

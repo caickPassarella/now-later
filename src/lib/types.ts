@@ -4,6 +4,7 @@ export type Entry = {
   createdAt: Date;
   deletedAt?: Date | null;
   occurredAt?: Date | null;
+  tag?: string | null;
   _key?: number; // Used for framer-motion to avoid re-animating on updates
 };
 

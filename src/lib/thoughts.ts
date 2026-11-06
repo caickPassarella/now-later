@@ -23,10 +23,11 @@ export const countThoughts = async () => {
   return prisma.thought.count({ where: { deletedAt: null } });
 };
 
-export const addThought = async (content: string) => {
+export const addThought = async (content: string, tag: string | undefined) => {
   const thought = await prisma.thought.create({
     data: {
       content,
+      tag,
     },
   });
   logger.info("Thought added", { id: thought.id });
